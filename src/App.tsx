@@ -1,6 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
-import Nav from './component/nav';
 import Home from './screens/home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CountryDetails from './screens/countryDetails';

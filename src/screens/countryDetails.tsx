@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../component/nav';
-import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, Container, Ctext, Ctextlight, DetailContainer, FlagContainer, HomeContainer } from './style';
+import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, ChiledContainer2, Container, CtextD, CtextlightD, DetailContainer, FlagContainer, FlagImg, HeaderText, HomeContainer, LoaderC } from './style';
+import Loader from "react-js-loader";
+import { useTheme } from '../contextApi/themeContext';
+
 
 interface Country {
     name: {
@@ -28,9 +31,11 @@ const CountryDetails: React.FC = () => {
     const [countryDetails, setCountryDetails] = useState<Country | null>(null);
     const [borderCountries, setBorderCountries] = useState<string[]>([]);
     const navigate = useNavigate();
-
+    const [loader, setLoader] = useState(false)
+    const { isDarkMode } = useTheme();
 
     useEffect(() => {
+        setLoader(true)
         axios.get(`https://restcountries.com/v3.1/name/${countryName}`)
             .then((res) => {
                 const country = res.data[0];
@@ -46,8 +51,10 @@ const CountryDetails: React.FC = () => {
                             console.error('Error fetching border countries:', error);
                         });
                 }
+                setLoader(false)
             })
             .catch((error) => {
+                setLoader(false)
                 console.error('Error fetching data:', error);
             });
     }, [countryName]);
@@ -55,6 +62,8 @@ const CountryDetails: React.FC = () => {
     const handleBackClick = () => {
         navigate('/');
     };
+
+
 
     return (
         <div>
@@ -64,41 +73,43 @@ const CountryDetails: React.FC = () => {
                     <Arrow>←</Arrow>
                     <BackText>Back</BackText>
                 </BackBtn>
-                {countryDetails ? (
+                {countryDetails && !loader ? (
                     <FlagContainer>
-                        <img src={countryDetails.flags.svg} alt={`${countryDetails.name.official} flag`} style={{ width: '48%', height: '400px', borderRadius: '15px' }} />
+                        <FlagImg src={countryDetails.flags.svg} alt={`${countryDetails.name.official} flag`} />
                         <DetailContainer>
-                            <h1>{countryDetails.name.official}</h1>
+                            <HeaderText>{countryDetails.name.official}</HeaderText>
                             <Container>
                                 <ChiledContainer>
-                                    <Ctext>Native name: <Ctextlight>{countryDetails.name.common}</Ctextlight></Ctext>
-                                    <Ctext>Population: <Ctextlight>{countryDetails.population.toLocaleString()}</Ctextlight></Ctext>
-                                    <Ctext>Region: <Ctextlight>{countryDetails.region}</Ctextlight></Ctext>
-                                    <Ctext>Sub Region: <Ctextlight>{countryDetails.subregion || 'N/A'}</Ctextlight></Ctext>
-                                    <Ctext>Capital: <Ctextlight>{countryDetails.capital ? countryDetails.capital[0] : 'N/A'}</Ctextlight></Ctext>
+                                    <CtextD>Native name: <CtextlightD>{countryDetails.name.common}</CtextlightD></CtextD>
+                                    <CtextD>Population: <CtextlightD>{countryDetails.population.toLocaleString()}</CtextlightD></CtextD>
+                                    <CtextD>Region: <CtextlightD>{countryDetails.region}</CtextlightD></CtextD>
+                                    <CtextD>Sub Region: <CtextlightD>{countryDetails.subregion || 'N/A'}</CtextlightD></CtextD>
+                                    <CtextD>Capital: <CtextlightD>{countryDetails.capital ? countryDetails.capital[0] : 'N/A'}</CtextlightD></CtextD>
                                 </ChiledContainer>
-                                <ChiledContainer>
-                                    <Ctext>Top Level Domain: <Ctextlight>{countryDetails.tld ? countryDetails.tld.join(', ') : 'N/A'}</Ctextlight></Ctext>
-                                    <Ctext>Currencies: <Ctextlight>{countryDetails.currencies ? Object.values(countryDetails.currencies).map(currency => currency.name).join(', ') : 'N/A'}</Ctextlight></Ctext>
-                                    <Ctext>Languages: <Ctextlight>{countryDetails.languages ? Object.values(countryDetails.languages).join(', ') : 'N/A'}</Ctextlight></Ctext>
-                                </ChiledContainer>
+                                <ChiledContainer2>
+                                    <CtextD>Top Level Domain: <CtextlightD>{countryDetails.tld ? countryDetails.tld.join(', ') : 'N/A'}</CtextlightD></CtextD>
+                                    <CtextD>Currencies: <CtextlightD>{countryDetails.currencies ? Object.values(countryDetails.currencies).map(currency => currency.name).join(', ') : 'N/A'}</CtextlightD></CtextD>
+                                    <CtextD>Languages: <CtextlightD>{countryDetails.languages ? Object.values(countryDetails.languages).join(', ') : 'N/A'}</CtextlightD></CtextD>
+                                </ChiledContainer2>
                             </Container>
                             <BoundriesC>
-                                <Ctext>
+                                <CtextD>
                                     Border Countries:
-                                </Ctext>
+                                </CtextD>
                                 <BoundriesCntryNameC>
                                     {borderCountries.length > 0 ? borderCountries.map((countryName) => (
-                                        <BoundriesCntryName key={countryName}>
+                                        <BoundriesCntryName key={countryName} onClick={() => { navigate(`/country/${countryName}`); }}>
                                             <BorderText>{countryName}</BorderText>
                                         </BoundriesCntryName>
-                                    )) : <Ctextlight>N/A</Ctextlight>}
+                                    )) : <BorderText style={{ marginTop: '6px' }}>N/A</BorderText>}
                                 </BoundriesCntryNameC>
                             </BoundriesC>
                         </DetailContainer>
                     </FlagContainer>
                 ) : (
-                    <p>Loading...</p>
+                    <LoaderC>
+                        <Loader type="spinner-cub" bgColor={isDarkMode ? '#fafafa' : '#202C36'} color={isDarkMode ? '#fafafa' : '#202C36'} size={100} />
+                    </LoaderC>
                 )}
             </HomeContainer>
         </div>

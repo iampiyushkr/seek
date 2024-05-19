@@ -1,15 +1,16 @@
 import React from 'react';
 import { ModeText, NavContainer, NavMode, NavText } from './style';
+import { useTheme } from '../contextApi/themeContext';
 
-// Define the component as a functional component using React.FC type
 const Nav: React.FC = () => {
+    const { toggleTheme, isDarkMode } = useTheme();
     return (
         <NavContainer>
             <NavText>
                 Where in the world?
             </NavText>
-            <NavMode>
-                <img src="/assets/night-mode (1).svg" alt="Night Mode" style={{ width: '15px', height: '13px' }} />
+            <NavMode onClick={() => { toggleTheme() }}>
+                <img src={isDarkMode ? "/assets/night-mode.svg" : "/assets/day-mode.svg"} alt="Night Mode" style={{ width: '15px', height: '13px' }} />
                 <ModeText>
                     Dark Mode
                 </ModeText>
