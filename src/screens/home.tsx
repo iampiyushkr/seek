@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyledSelect, StyledSelectContainer, CountryContainer, CountryDetail, CountryName, Ctext, Ctextlight, HeaderContainer, HomeContainer, InputBox, InputBoxContainer, TextContainer } from './style';
 import axios from 'axios';
 import Nav from '../component/nav';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Country {
     name: {
@@ -22,6 +22,7 @@ const Home: React.FC = () => {
     const [regions, setRegions] = useState<string[]>([]);
     const [selectedRegion, setSelectedRegion] = useState<string>('');
     const [searchData, setSearchData] = useState<string>('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('https://restcountries.com/v3.1/independent?status=true')
@@ -82,17 +83,17 @@ const Home: React.FC = () => {
 
                 <CountryContainer>
                     {data.map((country) => (
-                        <Link to={`/country/${country.name.official}`}>
-                            <CountryDetail key={country.name.official}>
-                                <img src={country.flags.png} alt={`${country.name.official} flag`} style={{ width: '100%', height: '160px' }} />
-                                <TextContainer>
-                                    <CountryName>{country.name.official}</CountryName>
-                                    <Ctext>Population: <Ctextlight>{country.population.toLocaleString()}</Ctextlight></Ctext>
-                                    <Ctext>Region: <Ctextlight>{country.region}</Ctextlight></Ctext>
-                                    <Ctext>Capital: <Ctextlight>{country.capital[0]}</Ctextlight></Ctext>
-                                </TextContainer>
-                            </CountryDetail>
-                        </Link>
+
+                        <CountryDetail key={country.name.official} onClick={() => { navigate(`/country/${country.name.official}`); }}>
+                            <img src={country.flags.png} alt={`${country.name.official} flag`} style={{ width: '100%', height: '160px' }} />
+                            <TextContainer>
+                                <CountryName>{country.name.official}</CountryName>
+                                <Ctext>Population: <Ctextlight>{country.population.toLocaleString()}</Ctextlight></Ctext>
+                                <Ctext>Region: <Ctextlight>{country.region}</Ctextlight></Ctext>
+                                <Ctext>Capital: <Ctextlight>{country.capital[0]}</Ctextlight></Ctext>
+                            </TextContainer>
+                        </CountryDetail>
+
                     ))}
                 </CountryContainer>
             </HomeContainer>

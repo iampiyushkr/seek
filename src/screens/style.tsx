@@ -26,7 +26,8 @@ color:grey
 export const CountryDetail = styled.div`
 width:264px;
 height:336px;
- box-shadow: 0px 0px 7px 2px #00000008;;
+ box-shadow: 0px 0px 7px 2px #00000008;
+ cursor:pointer;
 `;
 export const HomeContainer = styled.div`
 padding:0px 80px;
@@ -156,6 +157,49 @@ export const BackText = styled.p`
 margin:0px;
 font-size: 16px;
 margin-left: 10px;
+cursor:pointer;
+
+
+`;
+export const FlagContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top:80px
+`;
+export const DetailContainer = styled.div`
+width:45%;
+margin-top:40px
+
+`;
+export const Container = styled.div`
+display: flex;
+justify-content: space-between;
+
+`;
+export const ChiledContainer = styled.div`
+width:45%;
+`;
+export const BoundriesC = styled.div`
+display: flex;
+margin-top:60px;
+`;
+export const BoundriesCntryNameC = styled.div`
+display: flex;
+`;
+export const BoundriesCntryName = styled.div`
+width:90px;
+height:28px;
+background: #FFFFFF;
+box-shadow: 0px 0px 4px 1px #0000001B;
+text-align:center;
+margin-left: 10px;
+`;
+
+export const BorderText = styled.p`
+margin:0px;
+margin-top:4px;
+font-size: 14px;
+color: #111517;
 
 
 `;
