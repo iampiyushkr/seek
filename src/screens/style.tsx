@@ -312,18 +312,18 @@ export const LoaderC = styled.div`
 display: flex; 
 justify-content: center;
  align-items: center; 
- height: 50vh;
+ height: 75vh;
 
 `;
 export const LoaderB = styled.div`
 display: flex; 
 justify-content: center;
  align-items: center; 
- height: 30px;
+ height: 40px;
 
 `;
 export const ErrorDiv = styled.div`
- height: 70vh;
+ height: 80vh;
  display: flex;
  align-items: center;
  justify-content: center;
