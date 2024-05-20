@@ -47,6 +47,7 @@ height:336px;
  cursor:pointer;
  background-color: ${props => props.theme.colors.whiteBackground};
  border-radius: 6px;
+ transition: transform 0.5s ease-in-out;
  &:hover {
     transform: scale(1.1);
     background-color: ${props => props.theme.colors.whiteBackground};
@@ -178,6 +179,10 @@ export const BackBtn = styled.div`
   align-items: center;
   border-radius: 6px;
   cursor:pointer;
+  transition: transform 0.5s ease-in-out;
+ &:hover {
+    transform: scale(1.1);
+ }
 
 `;
 export const HeaderText = styled.h1`
@@ -211,6 +216,7 @@ export const FlagContainer = styled.div`
 export const FlagImg = styled.img`
 width: 48%;
 border-radius: 8px;
+
 @media (max-width: 600px) {
     width:100%;
     height:auto
@@ -262,6 +268,7 @@ margin-left: 10px;
     margin-left: 0px;
   }
 
+
 `;
 export const BoundriesCntryName = styled.div`
 width:90px;
@@ -274,6 +281,10 @@ display: flex;
 align-items: center;
 justify-content: center;
 cursor:pointer;
+transition: transform 0.5s ease-in-out;
+ &:hover {
+    transform: scale(1.1);
+ }
 @media (max-width: 600px) {
     margin: 15px 0px 10px 0px
   }
@@ -301,6 +312,13 @@ display: flex;
 justify-content: center;
  align-items: center; 
  height: 100vh;
+
+`;
+export const LoaderB = styled.div`
+display: flex; 
+justify-content: center;
+ align-items: center; 
+ height: 30px;
 
 `;
 

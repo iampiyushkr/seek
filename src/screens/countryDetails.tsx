@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../component/nav';
-import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, ChiledContainer2, Container, CtextD, CtextlightD, DetailContainer, FlagContainer, FlagImg, HeaderText, HomeContainer, LoaderC } from './style';
+import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, ChiledContainer2, Container, CtextD, CtextlightD, DetailContainer, FlagContainer, FlagImg, HeaderText, HomeContainer, LoaderB, LoaderC } from './style';
 import Loader from "react-js-loader";
 import { useTheme } from '../contextApi/themeContext';
 
@@ -33,6 +33,7 @@ const CountryDetails: React.FC = () => {
     const navigate = useNavigate();
     const [loader, setLoader] = useState(false)
     const { isDarkMode } = useTheme();
+    const [bloader, setBloader] = useState(false)
 
     useEffect(() => {
         setLoader(true)
@@ -40,18 +41,21 @@ const CountryDetails: React.FC = () => {
             .then((res) => {
                 const country = res.data[0];
                 setCountryDetails(country);
-
+                setLoader(false)
                 if (country.borders) {
+                    setBloader(true)
                     axios.get(`https://restcountries.com/v3.1/alpha?codes=${country.borders.join(',')}`)
                         .then((res) => {
                             const borderCountryNames = res.data.map((country: Country) => country.name.common);
                             setBorderCountries(borderCountryNames);
+                            setBloader(false)
                         })
                         .catch((error) => {
                             console.error('Error fetching border countries:', error);
+                            setBloader(false)
                         });
                 }
-                setLoader(false)
+
             })
             .catch((error) => {
                 setLoader(false)
@@ -96,13 +100,15 @@ const CountryDetails: React.FC = () => {
                                 <CtextD>
                                     Border Countries:
                                 </CtextD>
-                                <BoundriesCntryNameC>
+                                {bloader ? <LoaderB>
+                                    <Loader type="spinner-cub" bgColor={isDarkMode ? '#fafafa' : '#202C36'} color={isDarkMode ? '#fafafa' : '#202C36'} size={20} />
+                                </LoaderB> : <BoundriesCntryNameC>
                                     {borderCountries.length > 0 ? borderCountries.map((countryName) => (
                                         <BoundriesCntryName key={countryName} onClick={() => { navigate(`/country/${countryName}`); }}>
                                             <BorderText>{countryName}</BorderText>
                                         </BoundriesCntryName>
                                     )) : <BorderText style={{ marginTop: '6px' }}>N/A</BorderText>}
-                                </BoundriesCntryNameC>
+                                </BoundriesCntryNameC>}
                             </BoundriesC>
                         </DetailContainer>
                     </FlagContainer>
