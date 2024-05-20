@@ -4,6 +4,7 @@ font-weight:800;
 font-size: 18px;
 margin-bottom: 12px;
 margin-Top:20px;
+width:90%;
 color: ${props => props.theme.colors.text};
 `;
 export const TextContainer = styled.p`
@@ -311,7 +312,7 @@ export const LoaderC = styled.div`
 display: flex; 
 justify-content: center;
  align-items: center; 
- height: 100vh;
+ height: 50vh;
 
 `;
 export const LoaderB = styled.div`
@@ -319,6 +320,14 @@ display: flex;
 justify-content: center;
  align-items: center; 
  height: 30px;
+
+`;
+export const ErrorDiv = styled.div`
+ height: 70vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ color:${props => props.theme.colors.text};
 
 `;
 

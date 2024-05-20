@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyledSelect, StyledSelectContainer, CountryContainer, CountryDetail, CountryName, Ctext, Ctextlight, HeaderContainer, HomeContainer, InputBox, InputBoxContainer, TextContainer, HomeFlag, LoaderC } from './style';
+import { StyledSelect, StyledSelectContainer, CountryContainer, CountryDetail, CountryName, Ctext, Ctextlight, HeaderContainer, HomeContainer, InputBox, InputBoxContainer, TextContainer, HomeFlag, LoaderC, ErrorDiv } from './style';
 import axios from 'axios';
 import Nav from '../component/nav';
 import { Link, useNavigate } from 'react-router-dom';
@@ -44,7 +44,6 @@ const Home: React.FC = () => {
             })
             .catch((error) => {
                 setLoader(false)
-                console.error('Error fetching data:', error);
             });
     }
 
@@ -59,7 +58,6 @@ const Home: React.FC = () => {
             })
             .catch((error) => {
                 setLoader(false)
-                console.error('Error fetching data:', error);
             });
     }
 
@@ -93,7 +91,7 @@ const Home: React.FC = () => {
             <HomeContainer>
                 {loader ? <LoaderC>
                     <Loader type="spinner-cub" bgColor={isDarkMode ? '#fafafa' : '#202C36'} color={isDarkMode ? '#fafafa' : '#202C36'} size={100} />
-                </LoaderC> : <>
+                </LoaderC> : (data.length > 0 ? <>
                     <HeaderContainer>
                         <InputBoxContainer>
                             <img src={isDarkMode ? "/assets/loupe.png" : "/assets/search.svg"} alt="Search Icon" style={{ width: '15px', height: '13px', marginLeft: '30px', cursor: 'pointer' }} onClick={onSearch} />
@@ -127,7 +125,7 @@ const Home: React.FC = () => {
 
                         ))}
                     </CountryContainer>
-                </>}
+                </> : <ErrorDiv>No Data Found</ErrorDiv>)}
             </HomeContainer>
         </div>
     );

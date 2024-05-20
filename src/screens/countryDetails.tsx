@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Nav from '../component/nav';
-import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, ChiledContainer2, Container, CtextD, CtextlightD, DetailContainer, FlagContainer, FlagImg, HeaderText, HomeContainer, LoaderB, LoaderC } from './style';
+import { Arrow, BackBtn, BackText, BorderText, BoundriesC, BoundriesCntryName, BoundriesCntryNameC, ChiledContainer, ChiledContainer2, Container, CtextD, CtextlightD, DetailContainer, ErrorDiv, FlagContainer, FlagImg, HeaderText, HomeContainer, LoaderB, LoaderC } from './style';
 import Loader from "react-js-loader";
 import { useTheme } from '../contextApi/themeContext';
 
@@ -51,15 +51,14 @@ const CountryDetails: React.FC = () => {
                             setBloader(false)
                         })
                         .catch((error) => {
-                            console.error('Error fetching border countries:', error);
                             setBloader(false)
                         });
                 }
 
             })
             .catch((error) => {
+
                 setLoader(false)
-                console.error('Error fetching data:', error);
             });
     }, [countryName]);
 
@@ -67,7 +66,22 @@ const CountryDetails: React.FC = () => {
         navigate('/');
     };
 
-
+    if (loader) {
+        return (
+            <div>
+                <Nav />
+                <HomeContainer style={{ paddingBottom: '100px' }}>
+                    <BackBtn onClick={handleBackClick}>
+                        <Arrow>←</Arrow>
+                        <BackText>Back</BackText>
+                    </BackBtn>
+                    <LoaderC>
+                        <Loader type="spinner-cub" bgColor={isDarkMode ? '#fafafa' : '#202C36'} color={isDarkMode ? '#fafafa' : '#202C36'} size={100} />
+                    </LoaderC>
+                </HomeContainer>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -77,7 +91,7 @@ const CountryDetails: React.FC = () => {
                     <Arrow>←</Arrow>
                     <BackText>Back</BackText>
                 </BackBtn>
-                {countryDetails && !loader ? (
+                {countryDetails ? (
                     <FlagContainer>
                         <FlagImg src={countryDetails.flags.svg} alt={`${countryDetails.name.official} flag`} />
                         <DetailContainer>
@@ -111,12 +125,7 @@ const CountryDetails: React.FC = () => {
                                 </BoundriesCntryNameC>}
                             </BoundriesC>
                         </DetailContainer>
-                    </FlagContainer>
-                ) : (
-                    <LoaderC>
-                        <Loader type="spinner-cub" bgColor={isDarkMode ? '#fafafa' : '#202C36'} color={isDarkMode ? '#fafafa' : '#202C36'} size={100} />
-                    </LoaderC>
-                )}
+                    </FlagContainer>) : <ErrorDiv>No Data Found</ErrorDiv>}
             </HomeContainer>
         </div>
     );
